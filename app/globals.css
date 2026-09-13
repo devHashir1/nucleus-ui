@@ -137,11 +137,9 @@ body {
   overflow-x: clip;
 }
 
-/* props table: readable on small screens */
+/* code blocks: slightly smaller type on small screens for readability */
 @media (max-width: 640px) {
-  .nucleus-code,
-  pre,
-  code {
+  .nucleus-code {
     font-size: 0.8125rem;
   }
 }

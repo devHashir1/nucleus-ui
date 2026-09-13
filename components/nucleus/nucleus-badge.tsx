@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-export function Badge({
+export function NucleusBadge({
   className,
   ...props
 }: React.ComponentProps<"span">) {

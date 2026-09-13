@@ -7,7 +7,7 @@ import { getComponentSource, readProjectFile } from "@/lib/source";
 import { highlightCode } from "@/lib/shiki";
 import { CodeBlock, CommandBlock } from "@/components/code-block";
 import { PropsTable } from "@/components/props-table";
-import { Badge } from "@/components/nucleus/badge";
+import { NucleusBadge } from "@/components/nucleus/nucleus-badge";
 
 export function generateStaticParams() {
   return registry.map((entry) => ({ slug: entry.slug }));
@@ -46,11 +46,10 @@ export default async function ComponentPage({
     source ? highlightCode(source, "tsx") : Promise.resolve(null),
   ]);
   const prerequisiteHtml = await Promise.all(
-    (entry.prerequisiteFilePaths ?? []).map(async (path) => ({
-      path,
-      html: await highlightCode(readProjectFile(path) ?? "", "tsx"),
-      raw: readProjectFile(path) ?? "",
-    }))
+    (entry.prerequisiteFilePaths ?? []).map(async (path) => {
+      const raw = readProjectFile(path) ?? "";
+      return { path, raw, html: await highlightCode(raw, "tsx") };
+    })
   );
 
   const deps = entry.dependencies ?? [];
@@ -69,8 +68,8 @@ export default async function ComponentPage({
 
       <div className="mt-6 flex flex-wrap items-center gap-3">
         <h1 className="font-mono text-2xl font-bold tracking-tight sm:text-3xl">{entry.name}</h1>
-        <Badge>{entry.category}</Badge>
-        {entry.status === "new" && <Badge>New</Badge>}
+        <NucleusBadge>{entry.category}</NucleusBadge>
+        {entry.status === "new" && <NucleusBadge>New</NucleusBadge>}
       </div>
       <p className="mt-3 max-w-2xl leading-relaxed text-muted-foreground">
         {entry.description}

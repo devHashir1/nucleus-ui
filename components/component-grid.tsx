@@ -2,10 +2,10 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Atom, SearchX, Search } from "lucide-react";
 import { registry, type RegistryEntry } from "@/lib/registry";
-import { Badge } from "@/components/nucleus/badge";
+import { NucleusBadge } from "@/components/nucleus/nucleus-badge";
 
 /* ---------------- Loading skeleton ---------------- */
 
@@ -61,7 +61,7 @@ function ComponentCard({ entry, index }: { entry: RegistryEntry; index: number }
             <h3 className="font-mono text-sm font-semibold tracking-tight">
               {entry.name}
             </h3>
-            {entry.status === "new" && <Badge>New</Badge>}
+            {entry.status === "new" && <NucleusBadge>New</NucleusBadge>}
           </div>
           <p className="text-sm leading-relaxed text-muted-foreground">
             {entry.description}
@@ -101,7 +101,7 @@ export function ComponentGrid() {
         <div className="flex flex-col gap-1">
           <h2 className="text-2xl font-semibold tracking-tight">Components</h2>
           <p className="text-sm text-muted-foreground">
-            {filtered.length} of {registry.length} building blocks
+            Showing {filtered.length} of {registry.length} components
           </p>
         </div>
 
@@ -148,9 +148,11 @@ export function ComponentGrid() {
       {/* Cards / empty state */}
       {filtered.length > 0 ? (
         <motion.div layout className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((entry, i) => (
-            <ComponentCard key={entry.slug} entry={entry} index={i} />
-          ))}
+          <AnimatePresence mode="popLayout">
+            {filtered.map((entry, i) => (
+              <ComponentCard key={entry.slug} entry={entry} index={i} />
+            ))}
+          </AnimatePresence>
         </motion.div>
       ) : (
         <div className="flex flex-col items-center rounded-2xl border border-dashed border-border/70 py-16 text-center">

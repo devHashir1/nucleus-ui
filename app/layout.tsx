@@ -35,8 +35,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <SiteHeader />
           <main className="flex flex-1 flex-col">{children}</main>
           <footer className="border-t border-border/60 py-8">
-            <div className="mx-auto max-w-6xl px-4 text-center text-sm text-muted-foreground sm:px-6">
-              Built with shadcn/ui · nucleusUI is open source · MIT
+            <div className="mx-auto flex max-w-6xl flex-col items-center gap-2 px-4 text-center text-sm text-muted-foreground sm:px-6">
+              <p>Built with shadcn/ui · MIT licensed</p>
+              <a
+                href="https://github.com/devHashir1/nucleus-ui"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="nucleus-navlink font-medium text-muted-foreground transition-colors hover:text-foreground"
+              >
+                github.com/devHashir1/nucleus-ui
+              </a>
             </div>
           </footer>
         </ThemeProvider>

@@ -35,7 +35,7 @@ export default function Home() {
             </a>
           </div>
           <p className="mt-6 font-mono text-xs text-muted-foreground">
-            npm install nucleus-ui · MIT licensed
+            Open source · MIT licensed · copy the source, own the code
           </p>
         </div>
       </section>
