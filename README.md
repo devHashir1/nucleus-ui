@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# nucleusUI ⚛️
 
-## Getting Started
+A portfolio-style showcase for **nucleusUI** — an open-source collection of polished, playful UI components built on top of [shadcn/ui](https://ui.shadcn.com).
 
-First, run the development server:
+🔗 **Repository:** [github.com/devHashir1/nucleus-ui](https://github.com/devHashir1/nucleus-ui)
+
+## Tech stack
+
+- **Next.js 16** (App Router, TypeScript)
+- **Tailwind CSS v4** + **shadcn/ui** (Base UI primitives)
+- **next-themes** for dark/light mode
+- **framer-motion** for subtle card motion
+- **react-hook-form + zod** for the form example
+
+## Getting started
 
 ```bash
+# 1. Install dependencies
+npm install
+
+# 2. Start the dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see the site.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+app/                    # App Router pages
+  page.tsx              # Homepage (hero + registry-driven grid)
+  components/[slug]/    # Component detail pages
+components/
+  ui/                   # Raw shadcn primitives (installed via CLI)
+  nucleus/              # Branded wrappers (NucleusButton, NucleusInput, …)
+lib/
+  registry.tsx          # Component metadata — drives the homepage grid
+```
 
-## Learn More
+## Adding a component
 
-To learn more about Next.js, take a look at the following resources:
+1. Add the shadcn primitive: `npx shadcn@latest add <component>`
+2. Create a branded wrapper in `components/nucleus/` (prefix: `Nucleus*`)
+3. Register it in `lib/registry.tsx` — the homepage grid and `/components/[slug]` page are generated from this array, so nothing is hardcoded.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Command         | Description            |
+| --------------- | ---------------------- |
+| `npm run dev`   | Start dev server       |
+| `npm run build` | Production build       |
+| `npm run start` | Serve production build |
+| `npm run lint`  | Run ESLint             |
 
-## Deploy on Vercel
+## Deploying
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Deployable to [Vercel](https://vercel.com) out of the box — import the repo and click deploy. No environment variables required.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+
+MIT
