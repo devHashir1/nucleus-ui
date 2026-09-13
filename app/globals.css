@@ -131,6 +131,52 @@
   }
 }
 
+/* mobile guard: long identifiers/URLs must never widen the page */
+html,
+body {
+  overflow-x: clip;
+}
+
+/* props table: readable on small screens */
+@media (max-width: 640px) {
+  .nucleus-code,
+  pre,
+  code {
+    font-size: 0.8125rem;
+  }
+}
+
+/* nav link underline animation */
+.nucleus-navlink {
+  position: relative;
+}
+.nucleus-navlink::after {
+  content: "";
+  position: absolute;
+  left: 0.5rem;
+  right: 0.5rem;
+  bottom: 0.15rem;
+  height: 2px;
+  border-radius: 9999px;
+  background: var(--primary);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease-out;
+}
+.nucleus-navlink:hover::after {
+  transform: scaleX(1);
+}
+
+/* shiki code block theming (vesper) — inherits pre colors from the theme */
+.nucleus-code pre {
+  background: transparent !important;
+  margin: 0;
+}
+.nucleus-code code {
+  display: block;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+}
+
 /* subtle ambient glow behind the hero */
 .nucleus-glow {
   position: absolute;

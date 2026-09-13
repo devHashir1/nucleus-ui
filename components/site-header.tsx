@@ -15,7 +15,7 @@ export function SiteHeader() {
         <nav className="flex items-center gap-1 sm:gap-4">
           <Link
             href="/#components"
-            className="rounded-lg px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+            className="nucleus-navlink rounded-lg px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             Components
           </Link>
@@ -23,7 +23,7 @@ export function SiteHeader() {
             href="https://github.com/devHashir1/nucleus-ui"
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-lg px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+            className="nucleus-navlink rounded-lg px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             GitHub
           </a>

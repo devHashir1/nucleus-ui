@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { registry, getComponentBySlug } from "@/lib/registry";
 import { getComponentSource, readProjectFile } from "@/lib/source";
+import { highlightCode } from "@/lib/shiki";
 import { CodeBlock, CommandBlock } from "@/components/code-block";
 import { PropsTable } from "@/components/props-table";
 import { Badge } from "@/components/nucleus/badge";
@@ -23,7 +24,7 @@ export async function generateMetadata({
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="mb-3 text-sm font-semibold tracking-wide text-muted-foreground uppercase">
+    <h2 className="mb-4 text-sm font-semibold tracking-wide text-muted-foreground uppercase">
       {children}
     </h2>
   );
@@ -39,12 +40,25 @@ export default async function ComponentPage({
   const source = getComponentSource(slug);
   const Preview = entry.preview;
 
+  // Pre-highlight all snippets server-side with shiki
+  const [usageHtml, sourceHtml] = await Promise.all([
+    highlightCode(entry.code, "tsx"),
+    source ? highlightCode(source, "tsx") : Promise.resolve(null),
+  ]);
+  const prerequisiteHtml = await Promise.all(
+    (entry.prerequisiteFilePaths ?? []).map(async (path) => ({
+      path,
+      html: await highlightCode(readProjectFile(path) ?? "", "tsx"),
+      raw: readProjectFile(path) ?? "",
+    }))
+  );
+
   const deps = entry.dependencies ?? [];
   const installCmd = deps.length > 0 ? `npm install ${deps.join(" ")}` : null;
   const destination = entry.sourceFile ?? `components/nucleus/${entry.slug}.tsx`;
 
   return (
-    <div className="mx-auto w-full max-w-4xl px-4 py-12 sm:px-6">
+    <div className="mx-auto w-full max-w-4xl px-4 pt-10 pb-20 sm:px-6">
       <Link
         href="/#components"
         className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
@@ -54,7 +68,7 @@ export default async function ComponentPage({
       </Link>
 
       <div className="mt-6 flex flex-wrap items-center gap-3">
-        <h1 className="font-mono text-3xl font-bold tracking-tight">{entry.name}</h1>
+        <h1 className="font-mono text-2xl font-bold tracking-tight sm:text-3xl">{entry.name}</h1>
         <Badge>{entry.category}</Badge>
         {entry.status === "new" && <Badge>New</Badge>}
       </div>
@@ -90,20 +104,16 @@ export default async function ComponentPage({
       </section>
 
       {/* Full code of shared prerequisite files, if any */}
-      {entry.prerequisiteFilePaths?.map((path) => {
-        const code = readProjectFile(path);
-        if (!code) return null;
-        return (
-          <section key={path} className="mt-10">
-            <SectionTitle>Prerequisite — install this first</SectionTitle>
-            <p className="mb-3 text-sm text-muted-foreground">
-              The usage example depends on <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-[13px] text-foreground">{path}</code>.
-              Copy it into your project before copying the main component.
-            </p>
-            <CodeBlock code={code} filename={path} />
-          </section>
-        );
-      })}
+      {prerequisiteHtml.map(({ path, html, raw }) => (
+        <section key={path} className="mt-10">
+          <SectionTitle>Prerequisite — install this first</SectionTitle>
+          <p className="mb-3 text-sm text-muted-foreground">
+            The usage example depends on <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-[13px] text-foreground">{path}</code>.
+            Copy it into your project before copying the main component.
+          </p>
+          <CodeBlock code={raw} html={html} filename={path} />
+        </section>
+      ))}
 
       {/* Brand CSS variables the component needs in globals.css */}
       {entry.cssVars && (
@@ -113,14 +123,18 @@ export default async function ComponentPage({
             The nucleusUI accent lives in these CSS variables — without them the
             component falls back to the default shadcn zinc theme.
           </p>
-          <CodeBlock code={entry.cssVars} language="css" filename="app/globals.css" />
+          <CodeBlock
+            code={entry.cssVars}
+            html={await highlightCode(entry.cssVars, "css")}
+            filename="app/globals.css"
+          />
         </section>
       )}
 
       {/* Usage */}
       <section className="mt-10">
         <SectionTitle>Usage</SectionTitle>
-        <CodeBlock code={entry.code} />
+        <CodeBlock code={entry.code} html={usageHtml} />
       </section>
 
       {/* Real source, read from disk at render time */}
@@ -131,7 +145,7 @@ export default async function ComponentPage({
             Copy this file into <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-[13px] text-foreground">{destination}</code> in
             your project — it&apos;s yours to own and modify.
           </p>
-          <CodeBlock code={source} filename={destination} />
+          <CodeBlock code={source} html={sourceHtml ?? undefined} filename={destination} />
         </section>
       )}
 
