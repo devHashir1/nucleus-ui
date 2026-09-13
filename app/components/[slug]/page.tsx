@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { registry, getComponentBySlug } from "@/lib/registry";
-import { getComponentSource } from "@/lib/source";
+import { getComponentSource, readProjectFile } from "@/lib/source";
 import { CodeBlock, CommandBlock } from "@/components/code-block";
 import { PropsTable } from "@/components/props-table";
 import { Badge } from "@/components/nucleus/badge";
@@ -90,16 +90,20 @@ export default async function ComponentPage({
       </section>
 
       {/* Full code of shared prerequisite files, if any */}
-      {entry.prerequisiteFiles?.map((file) => (
-        <section key={file.path} className="mt-10">
-          <SectionTitle>Prerequisite — install this first</SectionTitle>
-          <p className="mb-3 text-sm text-muted-foreground">
-            This component depends on <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-[13px] text-foreground">{file.path}</code>.
-            Copy it into your project before copying the main component.
-          </p>
-          <CodeBlock code={file.code} filename={file.path} />
-        </section>
-      ))}
+      {entry.prerequisiteFilePaths?.map((path) => {
+        const code = readProjectFile(path);
+        if (!code) return null;
+        return (
+          <section key={path} className="mt-10">
+            <SectionTitle>Prerequisite — install this first</SectionTitle>
+            <p className="mb-3 text-sm text-muted-foreground">
+              The usage example depends on <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-[13px] text-foreground">{path}</code>.
+              Copy it into your project before copying the main component.
+            </p>
+            <CodeBlock code={code} filename={path} />
+          </section>
+        );
+      })}
 
       {/* Brand CSS variables the component needs in globals.css */}
       {entry.cssVars && (

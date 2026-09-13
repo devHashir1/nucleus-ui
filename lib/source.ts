@@ -16,3 +16,15 @@ export function getComponentSource(slug: string): string | null {
     return null;
   }
 }
+
+/**
+ * Server-only helper: reads any project file relative to the repo root,
+ * used to inline prerequisite file code without hardcoding it in the registry.
+ */
+export function readProjectFile(relativePath: string): string | null {
+  try {
+    return readFileSync(join(process.cwd(), relativePath), "utf8");
+  } catch {
+    return null;
+  }
+}
