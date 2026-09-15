@@ -1,4 +1,4 @@
-# nucleusUI ⚛️
+# nucleusUI 
 
 A portfolio-style showcase for **nucleusUI** — an open-source collection of polished, playful UI components built on top of [shadcn/ui](https://ui.shadcn.com).
 
