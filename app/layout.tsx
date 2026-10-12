@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "nucleusUI — delightful components on top of shadcn/ui",
+    default: "nucleusUI: delightful components on top of shadcn/ui",
     template: "%s · nucleusUI",
   },
   description:
@@ -34,9 +34,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <ThemeProvider>
           <SiteHeader />
           <main className="flex flex-1 flex-col">{children}</main>
-          <footer className="border-t border-border/60 py-8">
-            <div className="mx-auto flex max-w-6xl flex-col items-center gap-2 px-4 text-center text-sm text-muted-foreground sm:px-6">
-              <p>Built with shadcn/ui · MIT licensed</p>
+          <footer className="mt-auto border-t border-border/60 py-8">
+            <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 text-sm text-muted-foreground sm:flex-row sm:px-6">
+              <p>Built with shadcn/ui. MIT licensed.</p>
               <a
                 href="https://github.com/devHashir1/nucleus-ui"
                 target="_blank"

@@ -50,7 +50,7 @@ function ComponentCard({ entry, index }: { entry: RegistryEntry; index: number }
         className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border/70 bg-card transition-[box-shadow,border-color] duration-200 hover:border-primary/40 hover:shadow-[0_8px_30px_-12px_color-mix(in_oklch,var(--primary)_35%,transparent)] focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
       >
         {/* live mini-preview */}
-        <div className="relative flex h-40 items-center justify-center overflow-hidden border-b border-border/60 bg-muted/30 p-6">
+        <div className="relative flex min-h-40 items-center justify-center overflow-hidden border-b border-border/60 bg-muted/30 p-6">
           <div className="nucleus-grid-bg" />
           <div className="relative z-10 flex w-full items-center justify-center pointer-events-none">
             <entry.preview />

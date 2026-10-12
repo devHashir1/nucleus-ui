@@ -18,6 +18,11 @@ export interface NucleusNavbarProps extends React.ComponentProps<"header"> {
   cta?: React.ReactNode;
   /** Optional secondary actions rendered next to the CTA on desktop. */
   actions?: React.ReactNode;
+  /**
+   * Renders links as styled spans instead of anchors. Use in previews
+   * where the navbar is nested inside a clickable card (anchors can't nest).
+   */
+  decorative?: boolean;
 }
 
 /**
@@ -31,6 +36,7 @@ export function NucleusNavbar({
   links = [],
   cta,
   actions,
+  decorative = false,
   ...props
 }: NucleusNavbarProps) {
   const [open, setOpen] = React.useState(false);
@@ -60,15 +66,26 @@ export function NucleusNavbar({
           {/* Desktop links */}
           {links.length > 0 && (
             <nav aria-label="Main" className="ml-4 hidden items-center gap-1 md:flex">
-              {links.map((link, i) => (
-                <a
-                  key={`${link.label}-${link.href}-${i}`}
-                  href={link.href}
-                  className="rounded-lg px-2.5 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                >
-                  {link.label}
-                </a>
-              ))}
+              {links.map((link, i) =>
+                decorative ? (
+                  <span
+                    key={`${link.label}-${link.href}-${i}`}
+                    role="link"
+                    aria-disabled
+                    className="rounded-lg px-2.5 py-1.5 text-sm font-medium text-muted-foreground"
+                  >
+                    {link.label}
+                  </span>
+                ) : (
+                  <a
+                    key={`${link.label}-${link.href}-${i}`}
+                    href={link.href}
+                    className="rounded-lg px-2.5 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  >
+                    {link.label}
+                  </a>
+                )
+              )}
             </nav>
           )}
         </div>
@@ -97,16 +114,27 @@ export function NucleusNavbar({
         )}
       >
         <nav aria-label="Mobile" className="flex flex-col gap-1 px-4 py-3 sm:px-6">
-          {links.map((link, i) => (
-            <a
-              key={`${link.label}-${link.href}-${i}`}
-              href={link.href}
-              onClick={() => setOpen(false)}
-              className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-            >
-              {link.label}
-            </a>
-          ))}
+          {links.map((link, i) =>
+            decorative ? (
+              <span
+                key={`${link.label}-${link.href}-${i}`}
+                role="link"
+                aria-disabled
+                className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground"
+              >
+                {link.label}
+              </span>
+            ) : (
+              <a
+                key={`${link.label}-${link.href}-${i}`}
+                href={link.href}
+                onClick={() => setOpen(false)}
+                className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              >
+                {link.label}
+              </a>
+            )
+          )}
           {(cta || actions) && (
             <div className="mt-2 flex flex-col gap-2 border-t border-border/60 pt-3 md:hidden">
               {actions}

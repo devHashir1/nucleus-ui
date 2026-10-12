@@ -105,7 +105,7 @@ export default async function ComponentPage({
       {/* Full code of shared prerequisite files, if any */}
       {prerequisiteHtml.map(({ path, html, raw }) => (
         <section key={path} className="mt-10">
-          <SectionTitle>Prerequisite — install this first</SectionTitle>
+          <SectionTitle>Prerequisite: install this first</SectionTitle>
           <p className="mb-3 text-sm text-muted-foreground">
             The usage example depends on <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-[13px] text-foreground">{path}</code>.
             Copy it into your project before copying the main component.
@@ -119,7 +119,7 @@ export default async function ComponentPage({
         <section className="mt-10">
           <SectionTitle>Add to your globals.css</SectionTitle>
           <p className="mb-3 text-sm text-muted-foreground">
-            The nucleusUI accent lives in these CSS variables — without them the
+            The nucleusUI accent lives in these CSS variables. Without them the
             component falls back to the default shadcn zinc theme.
           </p>
           <CodeBlock
@@ -142,7 +142,7 @@ export default async function ComponentPage({
           <SectionTitle>Source</SectionTitle>
           <p className="mb-3 text-sm text-muted-foreground">
             Copy this file into <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-[13px] text-foreground">{destination}</code> in
-            your project — it&apos;s yours to own and modify.
+            your project, it&apos;s yours to own and modify.
           </p>
           <CodeBlock code={source} html={sourceHtml ?? undefined} filename={destination} />
         </section>
